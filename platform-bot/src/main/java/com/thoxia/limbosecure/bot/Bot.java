@@ -1,10 +1,7 @@
 package com.thoxia.limbosecure.bot;
 
 import com.thoxia.limbosecure.bot.backend.RequestHandler;
-import com.thoxia.limbosecure.bot.listener.AutoCompleteListener;
-import com.thoxia.limbosecure.bot.listener.ButtonListener;
-import com.thoxia.limbosecure.bot.listener.CommandListener;
-import com.thoxia.limbosecure.bot.listener.InputListener;
+import com.thoxia.limbosecure.bot.listener.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -21,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class Bot {
 
+    public static final String HYPERION_ID = "749999019480055939";
     public static final List<String> ACTIVITIES = new ArrayList<>();
 
     static {
@@ -34,16 +32,19 @@ public class Bot {
 
     @Getter private JDA jda;
 
-    @Getter private final RequestHandler handler = new RequestHandler("https://limbosecure.thoxia.com/api");
+    @Getter private RequestHandler handler;
 
     @SneakyThrows
     public void startBot() {
+        handler = new RequestHandler(config.getSecretKey(), "http://localhost:3000/api");
+
         jda = JDABuilder.createDefault(config.getToken())
                 .addEventListeners(
                         new ButtonListener(this),
                         new CommandListener(this),
                         new InputListener(this),
-                        new AutoCompleteListener()
+                        new AutoCompleteListener(),
+                        new PremiumCommandListener(this)
                 )
                 .setMemberCachePolicy(MemberCachePolicy.NONE)
                 .setStatus(config.getStatus())
@@ -53,6 +54,10 @@ public class Bot {
                 Commands.slash("setup", "Sends the verify embed.")
                         .addOption(OptionType.STRING, "server-id", "Your server's id. Can be found in config.yml", true)
                         .addOption(OptionType.STRING, "language", "Preferred language (EN, ES, TR)", true, true)
+                        .setGuildOnly(true),
+                Commands.slash("premium", "Upgrade a server to premium plan.")
+                        .addOption(OptionType.STRING, "server-id", "Server's ID", true)
+                        .addOption(OptionType.STRING, "server-ip", "Server's IP", true)
                         .setGuildOnly(true)
         ).complete();
 

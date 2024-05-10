@@ -21,6 +21,7 @@ public class RequestHandler {
     private static final CloseableHttpClient CLIENT = HttpClients.createDefault();
     private static final Gson GSON = new Gson();
 
+    private final String secretKey;
     private final String baseUrl;
 
     public HttpGetWithEntity initGetRequestWithBody(String additionUrl, String serverId) {
@@ -36,6 +37,7 @@ public class RequestHandler {
         HttpPut request = new HttpPut(baseUrl + "/" + additionUrl);
         request.addHeader("Content-Type", "application/json");
         request.addHeader("X-API-KEY", serverId);
+        request.addHeader("X-API-Secret", secretKey);
         request.addHeader("Pragma", "no-cache");
         request.setHeader("Cache-Control", "no-cache");
         return request;
@@ -71,6 +73,23 @@ public class RequestHandler {
     @SneakyThrows
     public void verify(String code, String serverId) {
         HttpPut request = initPutRequest("v1/code/verify/" + code, serverId);
+        URI uri = new URIBuilder(request.getURI()).build();
+        request.setURI(uri);
+
+        CloseableHttpResponse response = CLIENT.execute(request);
+        response.close();
+    }
+
+    @SneakyThrows
+    public void makeServerPremium(String id, String ip) {
+        HttpPut request = initPutRequest("v1/server/" + id, id);
+        JsonObject object = new JsonObject();
+        object.addProperty("id", id);
+        object.addProperty("ip", ip);
+        object.addProperty("premium", true);
+        String json = GSON.toJson(object);
+        request.setEntity(new StringEntity(json));
+
         URI uri = new URIBuilder(request.getURI()).build();
         request.setURI(uri);
 

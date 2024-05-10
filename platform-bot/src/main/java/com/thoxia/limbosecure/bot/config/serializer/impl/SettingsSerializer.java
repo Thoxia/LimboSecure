@@ -18,6 +18,7 @@ public class SettingsSerializer implements ObjectSerializer<BotConfig> {
     @Override
     public void serialize(@NonNull BotConfig config, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
         data.add("token", config.getToken());
+        data.add("secret-key", config.getSecretKey());
         data.add("status", config.getStatus().toString());
         data.add("thumbnail", config.getThumbnail());
         data.add("footer-icon", config.getFooterIcon());
@@ -28,12 +29,13 @@ public class SettingsSerializer implements ObjectSerializer<BotConfig> {
     @Override
     public BotConfig deserialize(@NonNull DeserializationData data, @NonNull GenericsDeclaration generics) {
         String token = data.get("token", String.class);
+        String secretKey = data.get("secret-key", String.class);
         OnlineStatus status = OnlineStatus.valueOf(data.get("status", String.class));
         String thumbnail = data.get("thumbnail", String.class);
         String footerIcon = data.get("footer-icon", String.class);
         String footer = data.get("footer", String.class);
         String author = data.get("author", String.class);
 
-        return new BotConfig(token, status, author, thumbnail, footer, footerIcon);
+        return new BotConfig(token, secretKey, status, author, thumbnail, footer, footerIcon);
     }
 }

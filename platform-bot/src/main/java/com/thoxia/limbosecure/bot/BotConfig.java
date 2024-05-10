@@ -12,9 +12,8 @@ import net.dv8tion.jda.api.OnlineStatus;
 @Setter
 public class BotConfig {
 
-
-
     private String token = "YOUR_TOKEN";
+    private String secretKey = "YOUR_SECRET_KEY";
     private OnlineStatus status = OnlineStatus.ONLINE;
 
     private String author = "LimboSecure";

@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -54,10 +56,12 @@ public class Bot {
                 Commands.slash("setup", "Sends the verify embed.")
                         .addOption(OptionType.STRING, "server-id", "Your server's id. Can be found in config.yml", true)
                         .addOption(OptionType.STRING, "language", "Preferred language (EN, ES, TR)", true, true)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
                         .setGuildOnly(true),
                 Commands.slash("premium", "Upgrade a server to premium plan.")
                         .addOption(OptionType.STRING, "server-id", "Server's ID", true)
                         .addOption(OptionType.STRING, "server-ip", "Server's IP", true)
+                        .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
                         .setGuildOnly(true)
         ).complete();
 

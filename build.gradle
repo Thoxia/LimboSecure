@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.thoxia'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    // velocity does not have these dependencies in their api module
+    compileOnly 'com.google.code.gson:gson:2.10.1'
+    compileOnly 'com.google.guava:guava:33.1.0-jre'
+
+    compileOnly ('net.dv8tion:JDA:5.0.0-beta.20') {
+        exclude group: "club.minnced", module: "opus-java"
+    }
+
+    implementation 'org.apache.httpcomponents:httpclient:4.5.14'
+}
+
+def targetJavaVersion = 16
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+build {
+    dependsOn shadowJar
+}
+
+shadowJar {
+    dependsOn(jar)
+
+    relocate 'org.apache.httpcomponents', 'com.thoxia.limbosecure.thirdparty.org.apache.httpcomponents'
+
+    from sourceSets.getByName("main").output
+    configurations = [project.configurations.getByName("runtimeClasspath")]
+
+    archiveFileName = "${project.name}.jar"
+}

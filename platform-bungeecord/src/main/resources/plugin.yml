@@ -1,0 +1,8 @@
+name: "LimboSecure"
+main: "com.thoxia.limbosecure.bungee.LimboSecureBungee"
+version: '${version}'
+authors: [ Thoxia, hyperion ]
+depend:
+  - NanoLimboPlugin
+softdepend:
+  - LuckPerms

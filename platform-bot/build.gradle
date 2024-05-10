@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.thoxia.limbosecure'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven { url "https://storehouse.okaeri.eu/repository/maven-public/" }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    implementation ('net.dv8tion:JDA:5.0.0-beta.20') {
+        exclude group: "club.minnced", module: "opus-java"
+    }
+
+    implementation 'eu.okaeri:okaeri-configs-yaml-snakeyaml:5.0.1'
+
+    implementation 'org.apache.httpcomponents:httpclient:4.5.14'
+
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+build {
+    dependsOn shadowJar
+}
+
+shadowJar {
+    dependsOn(jar)
+
+    from sourceSets.getByName("main").output
+    configurations = [project.configurations.getByName("runtimeClasspath")]
+
+    archiveFileName = "LimboSecure-Bot v${project.version}.jar"
+
+    destinationDirectory = file("../out/")
+}
+
+jar {
+    manifest {
+        attributes (
+                'Main-Class': 'com.thoxia.limbosecure.bot.Main'
+        )
+    }
+}

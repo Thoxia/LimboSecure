@@ -1,0 +1,105 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.thoxia.limbosecure'
+version = '1.0.0'
+
+apply plugin: "eclipse"
+apply plugin: "org.jetbrains.gradle.plugin.idea-ext"
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+    }
+    maven {
+        setName("elytrium-repo")
+        setUrl("https://maven.elytrium.net/repo/")
+    }
+    maven { url "https://storehouse.okaeri.eu/repository/maven-public/" }
+}
+
+dependencies {
+
+    implementation(parent)
+
+    compileOnly "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
+    annotationProcessor "com.velocitypowered:velocity-api:3.3.0-SNAPSHOT"
+
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    compileOnly("net.elytrium.limboapi:api:1.1.18")
+    compileOnly("net.luckperms:api:5.4")
+
+    implementation('eu.okaeri:okaeri-configs-yaml-snakeyaml:5.0.1') {
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+
+    compileOnly ('net.dv8tion:JDA:5.0.0-beta.20') {
+        exclude group: "club.minnced", module: "opus-java"
+    }
+
+    implementation 'org.bstats:bstats-velocity:3.0.2'
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+
+def templateSource = file('src/main/templates')
+def templateDest = layout.buildDirectory.dir('generated/sources/templates')
+def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
+    def props = [
+            'version': project.version
+    ]
+    task.inputs.properties props
+
+    task.from templateSource
+    task.into templateDest
+    task.expand props
+}
+
+sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
+
+build {
+    dependsOn shadowJar
+}
+
+shadowJar {
+    dependsOn(jar)
+
+    relocate 'eu.okaeri', 'com.thoxia.limbosecure.velocity.thirdparty.eu.okaeri'
+    relocate 'net.dv8tion', 'com.thoxia.limbosecure.thirdparty.net.dv8tion'
+    relocate 'org.bstats', 'com.thoxia.limbosecure.velocity.thirdparty.org.bstats'
+
+    from sourceSets.getByName("main").output
+    configurations = [project.configurations.getByName("runtimeClasspath")]
+
+    archiveFileName = "LimboSecure-Velocity v${project.version}.jar"
+    destinationDirectory = file("../out/")
+}

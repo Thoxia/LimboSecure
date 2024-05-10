@@ -1,0 +1,6 @@
+rootProject.name = 'LimboSecure'
+include 'platform-velocity'
+include 'platform-bungeecord'
+include 'platform-spigot'
+include 'platform-bot'
+

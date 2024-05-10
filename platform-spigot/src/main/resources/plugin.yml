@@ -1,0 +1,6 @@
+name: "LimboSecure"
+main: "com.thoxia.limbosecure.spigot.LimboSecureSpigot"
+version: '${version}'
+authors: [ Thoxia, hyperion ]
+softdepend:
+  - LuckPerms

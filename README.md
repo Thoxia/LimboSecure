@@ -31,9 +31,9 @@ These plans are made to serve every server, no matter the size of the server.
 Since this is an open-sourced project, the point of premium plan is to support us.
 There is a cost to provide updates and host everything.
 <br>
-However, every system provided by LimboSecure if open-sourced. 
+However, every system provided by LimboSecure is open-sourced. 
 <br>
 Meaning you can host every service yourself.
 <br> But remember, you won't receive any support prior to that.
 <br>
-[We would appreciate if you consider supporting us.](https://buymeacoffee.com/efekurban)
+[Click to support the project.](https://buymeacoffee.com/efekurban)

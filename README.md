@@ -21,6 +21,10 @@ Setting up LimboSecure is quite easy.
 # Server Plans
 
 LimboSecure has two server plan.
+
+1) Always Free: Up to 5 verification session per 30 minutes
+2) Premium: Up to 25 verification session per 30 minutes
+
 <br>
 These plans are made to serve every server, no matter the size of the server.
 <br>
@@ -33,5 +37,3 @@ Meaning you can host every service yourself.
 <br> But remember, you won't receive any support prior to that.
 <br>
 [We would appreciate if you consider supporting us.](https://buymeacoffee.com/efekurban)
-1) Always Free: Up to 5 verification session per 30 minutes
-2) Premium: Up to 25 verification session per 30 minutes

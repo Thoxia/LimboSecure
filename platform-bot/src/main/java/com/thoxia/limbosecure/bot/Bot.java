@@ -36,7 +36,7 @@ public class Bot {
 
     @SneakyThrows
     public void startBot() {
-        handler = new RequestHandler(config.getSecretKey(), "http://localhost:3000/api");
+        handler = new RequestHandler(config.getSecretKey(), config.getApiUrl());
 
         jda = JDABuilder.createDefault(config.getToken())
                 .addEventListeners(

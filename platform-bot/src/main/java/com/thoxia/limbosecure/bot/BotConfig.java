@@ -14,6 +14,7 @@ public class BotConfig {
 
     private String token = "YOUR_TOKEN";
     private String secretKey = "YOUR_SECRET_KEY";
+    private String apiUrl = "https://limbosecure.thoxia.com/api";
     private OnlineStatus status = OnlineStatus.ONLINE;
 
     private String author = "LimboSecure";

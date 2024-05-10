@@ -25,7 +25,7 @@ LimboSecure has two server plan.
 1) Always Free: Up to 5 verification session per 30 minutes
 2) Premium: Up to 25 verification session per 30 minutes
 
-<br>
+### Reminder
 These plans are made to serve every server, no matter the size of the server.
 <br>
 Since this is an open-sourced project, the point of premium plan is to support us.

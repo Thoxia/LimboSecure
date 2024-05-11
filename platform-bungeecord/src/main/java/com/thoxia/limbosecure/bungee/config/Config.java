@@ -75,7 +75,7 @@ public class Config extends OkaeriConfig {
     @Getter @Setter
     public static class Unsafe extends OkaeriConfig {
 
-        private String apiUrl = "https://limbosecure.thoxia.com";
+        private String apiUrl = "https://limbosecure.thoxia.com/api";
 
         @Comment("Use this id to setup the bot.")
         private UUID serverId = UUID.randomUUID();

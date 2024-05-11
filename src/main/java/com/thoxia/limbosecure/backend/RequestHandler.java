@@ -30,7 +30,7 @@ public class RequestHandler {
 
     public HttpGetWithEntity initGetRequestWithBody(String additionUrl) {
         HttpGetWithEntity request = new HttpGetWithEntity(baseUrl + "/" + additionUrl);
-        request.addHeader("X-API-Key", serverId);
+        request.addHeader("X-API-KEY", serverId);
         request.addHeader("Pragma", "no-cache");
         request.setHeader("Cache-Control", "no-cache");
         request.addHeader("Content-Type", "application/json");
@@ -40,7 +40,7 @@ public class RequestHandler {
     public HttpPost initPostRequest(String additionUrl) {
         HttpPost request = new HttpPost(baseUrl + "/" + additionUrl);
         request.addHeader("Content-Type", "application/json");
-        request.addHeader("X-API-Key", serverId);
+        request.addHeader("X-API-KEY", serverId);
         request.addHeader("Pragma", "no-cache");
         request.setHeader("Cache-Control", "no-cache");
         return request;

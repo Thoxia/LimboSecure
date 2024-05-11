@@ -31,8 +31,6 @@ public class Config extends OkaeriConfig {
         DEFAULT_STAFFS.put("HyperionDev", "749999019480055939");
     }
 
-    private String licenseKey = "YOUR_LICENSE";
-
     @Comment("Currently supports: EN, ES, TR")
     private Language language = Language.EN;
 

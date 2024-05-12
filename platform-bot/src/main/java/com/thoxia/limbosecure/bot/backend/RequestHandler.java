@@ -84,7 +84,7 @@ public class RequestHandler {
     public void makeServerPremium(String id, String ip) {
         HttpPut request = initPutRequest("v1/server/" + id, id);
         JsonObject object = new JsonObject();
-        object.addProperty("id", id);
+        object.addProperty("serverId", id);
         object.addProperty("ip", ip);
         object.addProperty("premium", true);
         String json = GSON.toJson(object);
